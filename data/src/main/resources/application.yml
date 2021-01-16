@@ -1,0 +1,23 @@
+server:
+  port: 9999
+spring:
+  datasource:
+    username: root
+    password: admin123
+    url: jdbc:mysql://localhost:3306/scientific_research?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: data
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+  client:
+    service-url:
+      defaultZone: http://localhost:10000/eureka/
+
+mybatis:
+  type-aliases-package: com.sicnu.achievement.pojo
+  mapper-locations: classpath:mapper/*.xml
