@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.achievement.mapper.PaperMapper">
+
+    <insert id="addPaper" parameterType="Paper">
+        insert into paper(
+        paper_name,
+        leader_id,
+        pt_id,
+        periodical_id,
+        publish_time,
+        include_number,
+        sc_id,
+        subject_id,
+        aod_id,
+        sd_id,
+        remark
+        ) values(
+        #{paper_name},
+        #{leader_id},
+        #{pt_id},
+        #{periodical_id},
+        #{publish_time},
+        #{include_number},
+        #{sc_id},
+        #{subject_id},
+        #{aod_id},
+        #{sd_id},
+        #{remark}
+        )
+    </insert>
+    <select id="selectPaperByNumber" parameterType="Paper" resultType="Paper">
+        select * from paper
+        where
+        include_number = #{include_number}
+    </select>
+    <select id="selectPaperByCondition" parameterType="java.util.HashMap" resultType="Paper">
+        select * from paper
+        <where>
+            <if test="paper_name!=null and paper_name!=''">
+                and paper_name like '%${paper_name}%'
+            </if>
+            <if test="leader_id!=null and leader_id!=''">
+                and leader_id = #{leader_id}
+            </if>
+            <if test="periodical_id!=null and periodical_id!=''">
+                and periodical_id = #{periodical_id}
+            </if>
+            <if test="publish_time_start!=null and publish_time_end!=null ">
+                <![CDATA[
+                and publish_time >= #{publish_time_start}
+                and publish_time <= #{publish_time_end}
+                ]]>
+            </if>
+            <if test="include_number!=null and include_number!=''">
+                and include_number like '%${include_number}%'
+            </if>
+            <if test="sc_id!=null and sc_id!=''">
+                and sc_id = #{sc_id}
+            </if>
+            <if test="subject_id!=null and subject_id!=''">
+                and subject_id = #{subject_id}
+            </if>
+            <if test="aod_id!=null and aod_id!=''">
+                and aod_id =#{aod_id}
+            </if>
+            <if test="sd_id!=null and sd_id!=''">
+                and sd_id =#{sd_id}
+            </if>
+            <if test="pt_id!=null and pt_id!=''">
+                and pt_id =#{pt_id}
+            </if>
+            <if test="remark!=null  and remark!='' ">
+                and remark like '%${remark}%'
+            </if>
+        </where>
+        <if test="pageNum != null and pageSize != null">
+            <bind name="key_offset" value="(pageNum-1)*pageSize"></bind>
+            limit #{key_offset},#{pageSize}
+        </if>
+    </select>
+    <update id="updatePaper" parameterType="Paper">
+        update paper
+        <trim prefix="set" suffixOverrides=",">
+            <if test="paper_name!=null and paper_name!=''">
+                paper_name = #{paper_name},
+            </if>
+            <if test="leader_id!=null and leader_id!=''">
+                leader_id = #{leader_id},
+            </if>
+            <if test="periodical_id!=null and periodical_id!=''">
+                periodical_id = #{periodical_id},
+            </if>
+            <if test="publish_time!=null">
+                <![CDATA[
+                 paper.publish_time = #{publish_time},
+                ]]>
+            </if>
+            <if test="include_number!=null and include_number!=''">
+                include_number = #{include_number},
+            </if>
+            <if test="sc_id!=null and sc_id!=''">
+                sc_id = #{sc_id},
+            </if>
+            <if test="subject_id!=null and subject_id!=''">
+                subject_id = #{subject_id},
+            </if>
+            <if test="aod_id!=null and aod_id!=''">
+                aod_id =#{aod_id},
+            </if>
+            <if test="sd_id!=null and sd_id!=''">
+                sd_id =#{sd_id},
+            </if>
+            <if test="remark!=null  and remark!='' ">
+                remark =#{remark}
+            </if>
+        </trim>
+        where paper_id = #{paper_id}
+    </update>
+    <delete id="delPaperById" parameterType="int">
+        delete from paper
+        where
+        paper_id =#{paper_id}
+    </delete>
+
+    <select id="selectTotalPaper" parameterType="java.util.HashMap" resultType="int">
+        select count(*) count from paper
+        <where>
+            <if test="paper_name!=null and paper_name!=''">
+                and paper_name like '%${paper_name}%'
+            </if>
+            <if test="leader_id!=null and leader_id!=''">
+                and leader_id = #{leader_id}
+            </if>
+            <if test="periodical_id!=null and periodical_id!=''">
+                and periodical_id = #{periodical_id}
+            </if>
+            <if test="publish_time_start!=null and publish_time_end!=null ">
+                <![CDATA[
+                and publish_time >= #{publish_time_start}
+                and publish_time <= #{publish_time_end}
+                ]]>
+            </if>
+            <if test="include_number!=null and include_number!=''">
+                and include_number like '%${include_number}%'
+            </if>
+            <if test="sc_id!=null and sc_id!=''">
+                and sc_id = #{sc_id}
+            </if>
+            <if test="pt_id!=null and pt_id!=''">
+                and pt_id =#{pt_id}
+            </if>
+            <if test="subject_id!=null and subject_id!=''">
+                and subject_id = #{subject_id}
+            </if>
+            <if test="aod_id!=null and aod_id!=''">
+                and aod_id =#{aod_id}
+            </if>
+            <if test="sd_id!=null and sd_id!=''">
+                and sd_id =#{sd_id}
+            </if>
+            <if test="remark!=null  and remark!='' ">
+                and remark like '%${remark}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCountPaper" resultType="int" parameterType="int">
+        select count(*) cnt
+        from paper
+        <where>
+            <if test="leader_id!=null and leader_id!=''">
+                and leader_id = #{leader_id}
+            </if>
+            <if test="time_start!=null  and time_end!=null ">
+                <![CDATA[
+                and publish_time >= #{time_start}
+                and publish_time <= #{time_end}
+                ]]>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findPaperByLeaderId" parameterType="java.util.HashMap" resultType="Paper">
+        select * from Paper
+        where
+        leader_id = #{leader_id}
+    </select>
+
+    <select id="selectPaperId" parameterType="Paper" resultType="int">
+        select paper_id from paper
+        where
+        leader_id = #{leader_id}
+        and
+        paper_name = #{paper_name}
+    </select>
+
+    <select id="findPaperById" parameterType="java.util.HashMap" resultType="Paper">
+        select * from Paper
+        where
+        paper_id = #{paper_id}
+    </select>
+
+    <select id="selectPaperByIds" resultType="Paper" parameterType="java.util.ArrayList">
+        select * from paper where
+        <if test="idList != null and idList.size() > 0">
+            paper_id in (
+            <foreach collection="idList" item="paper_id" separator=",">
+                #{paper_id}
+            </foreach>
+            )
+        </if>
+    </select>
+
+    <select id="countPaper" resultType="int">
+        select count(*) from paper
+    </select>
+</mapper>

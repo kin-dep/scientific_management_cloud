@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.achievement.mapper.PaperTeamMapper">
+
+    <insert id="addPaperTeamUser" parameterType="PaperTeam">
+        insert into paper_team
+        (
+        paper_id,
+        user_id,
+        contribution
+        )
+        values
+        (
+        #{paper_id},
+        #{user_id},
+        #{contribution}
+        )
+    </insert>
+
+    <delete id="delPaperTeamUser" parameterType="PaperTeam">
+        delete from paper_team
+        where
+        paper_id = #{paper_id}
+        and
+        user_id = #{user_id}
+    </delete>
+
+
+    <select id="selectPaperTeam" parameterType="int" resultType="PaperTeamMap">
+        SELECT
+        u.user_id user_id,u.user_name name,u.department_id department_id,
+        u.role_id role_id,
+        t.contribution contribution
+        FROM
+        user u,
+        paper p,
+        paper_team t
+        WHERE
+        p.paper_id = #{paper_id}
+        and
+        p.paper_id = t.paper_id
+        and
+        t.user_id = u.user_id
+    </select>
+    <update id="updatePaperTeamUser" parameterType="PaperTeam">
+        update paper_team
+        <trim prefix="set" suffixOverrides=",">
+            <if test="contribution!=null and contribution!=''">
+                contribution = #{contribution},
+            </if>
+        </trim>
+        where
+        paper_id =#{paper_id}
+        and
+        user_id = #{user_id}
+    </update>
+</mapper>

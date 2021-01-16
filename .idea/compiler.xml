@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="login" />
+        <module name="project" />
+        <module name="data" />
+        <module name="achievement" />
+        <module name="route" />
+        <module name="examine" />
+        <module name="center" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="achievement" target="1.8" />
+      <module name="center" target="1.8" />
+      <module name="data" target="1.8" />
+      <module name="examine" target="1.8" />
+      <module name="login" target="1.8" />
+      <module name="project" target="1.8" />
+      <module name="route" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="achievement" options="-parameters" />
+      <module name="center" options="-parameters" />
+      <module name="data" options="-parameters" />
+      <module name="examine" options="-parameters" />
+      <module name="login" options="-parameters" />
+      <module name="project" options="-parameters" />
+      <module name="route" options="-parameters" />
+    </option>
+  </component>
+</project>

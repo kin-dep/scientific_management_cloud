@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: scientific-management-route
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10000/eureka
+
+zuul:
+  sensitive-headers: Access-Control-Allow-Origin
+  ignored-headers: Access-Control-Allow-Origin,H-APP-Id,APPToken
+  routes:
+    api-login:
+      path: /login/**
+      serviceId: LOGIN
+    api-project:
+      path: /project/**
+      serviceId: PROJECT
+    api-achievement:
+      path: /achievement/**
+      serviceId: ACHIEVEMENT
+    api-examine:
+      path: /examine/**
+      serviceId: EXAMINE
