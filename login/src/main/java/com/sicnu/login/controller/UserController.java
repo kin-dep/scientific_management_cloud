@@ -155,7 +155,6 @@ public class UserController {
     }
 
     @RequestMapping("/user/updateUserRole")
-
     public Result updateUserRole(Integer role_id, Integer user_id) {
         try {
             rs = userService.updateUserRole(role_id, user_id);

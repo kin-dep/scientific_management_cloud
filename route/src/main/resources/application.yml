@@ -28,3 +28,18 @@ zuul:
     api-examine:
       path: /examine/**
       serviceId: EXAMINE
+    api-auth:
+      path: /auth/**
+      serviceId: AUTH
+    api-check:
+      path: /check/**
+      serviceId: CHECK
+    api-log:
+      path: /log/**
+      serviceId: LOG
+    api-user:
+      path: /user/**
+      serviceId: LOGIN
+    api-manage:
+      path: /manage/**
+      serviceId: MANAGE

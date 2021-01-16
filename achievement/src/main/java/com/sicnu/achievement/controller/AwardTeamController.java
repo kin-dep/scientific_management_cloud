@@ -31,7 +31,6 @@ public class AwardTeamController {
     }
 
     @PostMapping("/team/delAwardTeamUser")
-
     public Result delAwardTeamUser(Integer award_id,Integer user_id) {
         try {
             rs=awardTeamService.delAwardTeamUser(award_id,user_id);

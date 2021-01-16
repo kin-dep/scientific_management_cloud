@@ -7,8 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="check" />
         <module name="login" />
         <module name="project" />
+        <module name="log" />
+        <module name="auth" />
+        <module name="system_management" />
         <module name="data" />
         <module name="achievement" />
         <module name="route" />
@@ -18,23 +22,31 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="achievement" target="1.8" />
+      <module name="auth" target="1.8" />
       <module name="center" target="1.8" />
+      <module name="check" target="1.8" />
       <module name="data" target="1.8" />
       <module name="examine" target="1.8" />
+      <module name="log" target="1.8" />
       <module name="login" target="1.8" />
       <module name="project" target="1.8" />
       <module name="route" target="1.8" />
+      <module name="system_management" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="achievement" options="-parameters" />
+      <module name="auth" options="-parameters" />
       <module name="center" options="-parameters" />
+      <module name="check" options="-parameters" />
       <module name="data" options="-parameters" />
       <module name="examine" options="-parameters" />
+      <module name="log" options="-parameters" />
       <module name="login" options="-parameters" />
       <module name="project" options="-parameters" />
       <module name="route" options="-parameters" />
+      <module name="system_management" options="-parameters" />
     </option>
   </component>
 </project>

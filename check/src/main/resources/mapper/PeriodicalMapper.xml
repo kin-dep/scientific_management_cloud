@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.check.mapper.PeriodicalMapper">
+    <insert id="addPeriodical" parameterType="Periodical">
+        insert into periodical(periodical_name,pp_score) values (#{periodical_name},#{pp_score})
+    </insert>
+    <delete id="delPeriodical" parameterType="Periodical">
+        delete from periodical where periodical_id = #{periodical_id}
+    </delete>
+    <select id="findAllPeriodical" resultType="Periodical">
+        select * from periodical
+    </select>
+    <select id="selectPeriodicalByName" parameterType="string" resultType="Periodical">
+        select * from periodical where
+        periodical_name = #{periodical_name}
+    </select>
+    <update id="updatePeriodical" parameterType="Periodical">
+        update periodical
+        <trim prefix="set" suffixOverrides=",">
+            <if test="periodical_name!=null">periodical_name = #{periodical_name},</if>
+            <if test="pp_score!=null">pp_score =#{pp_score}</if>
+        </trim>
+        where
+        periodical_id =#{periodical_id}
+    </update>
+    <select id="selectPeriodicalScoreById" resultType="int" parameterType="int">
+        select pp_score from periodical
+        where
+        periodical_id =#{periodical_id}
+
+    </select>
+</mapper>

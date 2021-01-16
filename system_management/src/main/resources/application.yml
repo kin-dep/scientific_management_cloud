@@ -1,0 +1,34 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    username: root
+    password: admin123
+    url: jdbc:mysql://localhost:3306/scientific_research?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+    type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    format:
+      date: yyyy-MM-dd
+    static-path-pattern: /static/**
+  mail:
+    username: 1776557392@qq.com
+    password: cxqofcvolzgabecj
+    host: smtp.qq.com
+    properties.mail.smtp.ssl.enable: true
+  thymeleaf:
+    cache: false
+  application:
+    name: manage
+
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+  client:
+    service-url:
+      defaultZone: http://localhost:10000/eureka/
+
+mybatis:
+  type-aliases-package: com.sicnu.system_management.pojo
+  mapper-locations: classpath:mapper/*.xml

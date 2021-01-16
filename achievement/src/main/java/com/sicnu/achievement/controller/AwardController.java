@@ -4,6 +4,7 @@ package com.sicnu.achievement.controller;
 import com.sicnu.achievement.pojo.Award;
 import com.sicnu.achievement.service.impl.AwardServiceImpl;
 import com.sicnu.achievement.util.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,6 @@ public class AwardController {
     private Result rs;
 
     @PostMapping("/award/addAward")
-
     public Result addAward(Award award, String checkMessage, String message) {
         try {
             rs = awardService.addAward(award, checkMessage, message);

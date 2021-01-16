@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.system_management.mapper.ConclusionTypeMapper">
+    <insert id="addConclusionType" parameterType="ConclusionType">
+        insert into conclusion_type(ct_name) values(#{ct_name})
+    </insert>
+    <delete id="delConclusionType" parameterType="ConclusionType">
+        delete from conclusion_type where ct_id = #{ct_id}
+    </delete>
+    <select id="findAllConclusionType" resultType="ConclusionType">
+        select * from conclusion_type
+    </select>
+    <select id="selectConclusionTypeByName" parameterType="string" resultType="ConclusionType">
+        select * from conclusion_type where
+        ct_name = #{ct_name}
+    </select>
+    <update id="updateConclusionType" parameterType="ConclusionType">
+        update conclusion_type
+        set
+        ct_name = #{ct_name}
+        where
+        ct_id =#{ct_id}
+    </update>
+</mapper>

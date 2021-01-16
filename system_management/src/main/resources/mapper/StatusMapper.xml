@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.system_management.mapper.StatusMapper">
+    <insert id="addStatus" parameterType="Status">
+        insert into status(status_name) values(#{status_name})
+    </insert>
+    <delete id="delStatus" parameterType="Status">
+        delete from status where status_id = #{status_id}
+    </delete>
+    <select id="findAllStatus" resultType="Status">
+        select * from status
+    </select>
+    <select id="selectStatusByName" parameterType="string" resultType="Status">
+        select * from status where
+        status_name = #{status_name}
+    </select>
+    <update id="updateStatus" parameterType="Status">
+        update status
+        set
+        status_name =#{status_name}
+        where
+        status_id =#{status_id}
+    </update>
+</mapper>

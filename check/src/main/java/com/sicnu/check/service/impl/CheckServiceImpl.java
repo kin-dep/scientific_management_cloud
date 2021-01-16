@@ -1,0 +1,267 @@
+package com.sicnu.check.service.impl;
+
+
+
+import com.sicnu.check.mapper.*;
+import com.sicnu.check.pojo.*;
+import com.sicnu.check.service.CheckService;
+import com.sicnu.check.util.Result;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+@Service
+public class CheckServiceImpl implements CheckService {
+    @Resource
+    UserMapper userMapper;
+    @Resource
+    AwardMapper awardMapper;
+    @Resource
+    BookMapper bookMapper;
+    @Resource
+    PaperMapper paperMapper;
+    @Resource
+    PatentMapper patentMapper;
+    @Resource
+    ProjectMapper projectMapper;
+    @Resource
+    CheckMapper checkMapper;
+    @Resource
+    LevelMapper levelMapper;
+    @Resource
+    AwardLevelMapper awardLevelMapper;
+    @Resource
+    AwardRankMapper awardRankMapper;
+    @Resource
+    PeriodicalMapper periodicalMapper;
+    @Resource
+    PressLevelMapper pressLevelMapper;
+    @Resource
+    HttpSession session;
+    @Resource
+    private OutlayMapper outlayMapper;
+
+    private Result rs;
+
+    @Scheduled(cron = "* * * 30 6,12 ? ")
+    public void addAllFinalCheck() {
+
+        try {
+            checkMapper.delCheck();
+            String start_time =null;
+            String end_time = null;
+
+            Date date = new Date();//当前日期
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//格式化对象
+            Calendar calendar = Calendar.getInstance();//日历对象
+            calendar.setTime(date);//设置当前日期
+            end_time = sdf.format(calendar.getTime());
+            System.out.println(sdf.format(calendar.getTime()));
+            calendar.add(Calendar.MONTH, -6);//月份减6
+            start_time = sdf.format(calendar.getTime());
+            System.out.println(sdf.format(calendar.getTime()));//输出格式化的日期
+            String[] str = start_time.split("-");
+            int a = Integer.parseInt(str[1]);
+            String checkTime;
+            //判断属于哪个学期
+            if (a==6){
+                checkTime = str[0] + "年第一学期";
+            }else{
+                checkTime = str[0] + "年第二学期";
+
+            }
+            List<Integer> userIds = userMapper.selectAllUserId();
+            for (Integer userId : userIds) {
+                Check check =  new Check();
+                //封装筛选条件到map
+                Map<String,Object> map= new HashMap<>();
+                map.put("start_time",start_time);
+                map.put("end_time",end_time);
+                map.put("leader_id",userId);
+                //用户信息
+                User user = userMapper.findUserById(userId);
+                check.setUser_id(userId);
+                check.setUser_name(user.getUser_name());
+                check.setDepartment_id(user.getDepartment_id());
+
+                //用户获奖情况考核
+                Integer awardCount = awardMapper.selectCountAward(map);
+                Integer awardGrade = awardGrade(userId);
+                //封装
+                check.setAward_count(awardCount);
+                check.setAward_score(awardGrade);
+
+                //用户著作情况考核
+                Integer bookCount = bookMapper.selectCountBook(map);
+                Integer bookGrade = bookGrade(userId);
+                //封装
+                check.setBook_count(bookCount);
+                check.setBook_score(bookGrade);
+
+                //用户论文情况考核
+                Integer paperCount = paperMapper.selectCountPaper(map);
+                Integer paperGrade = paperGrade(userId);
+                //封装
+                check.setPaper_count(paperCount);
+                check.setPaper_score(paperGrade);
+
+                //用户专利情况考核
+                Integer patentCount = patentMapper.selectCountPatent(map);
+                Integer patentGrade = patentCount*7;
+                //封装
+                check.setPatent_count(patentCount);
+                check.setPatent_score(patentGrade);
+
+                //用户project情况考核
+
+                Integer projectCount = projectMapper.selectCountProject(map);
+                Integer projectGrade = projectGrade(userId);
+                Integer projectOutlay = projectOutlay(userId);
+                Integer projectScore = projectOutlayScore(userId);
+                //封装
+                check.setProject_count(projectCount);
+                check.setProject_score(projectGrade);
+                check.setOutlay_sum(projectOutlay);
+                check.setOutlay_score(projectScore);
+
+                Integer totalGrade =awardGrade+bookGrade+paperGrade+patentGrade+projectGrade;
+                check.setTotal_score(totalGrade);
+                check.setCheck_time(checkTime);
+                checkMapper.addCheck(check);
+            }
+
+
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public Result selectAllCheckByCondition(Integer user_id,Integer department_id,String check_time) {
+        try {
+            Map<String,Object> map = new HashMap<>();
+            map.put("user_id",user_id);
+            map.put("department_id",department_id);
+            map.put("check_time",check_time);
+            List<Check> checks = checkMapper.selectCheckByCondition(map);
+            rs = new Result("200",null,checks);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+
+    public Result selectPersonalCheckByCondition(Integer department_id,String check_time) {
+        try {
+            User user = (User)session.getAttribute("user");
+            //获取登陆用户的缓存信息
+//            List<CacheUser> cacheUsers = cacheUserMapper.findAllCacheUser();
+            //获取登录用户的id
+            Integer uid = user.getUser_id();
+            Map<String,Object> map = new HashMap<>();
+            map.put("user_id",uid);
+            map.put("department_id",department_id);
+            map.put("check_time",check_time);
+            List<Check> checks = checkMapper.selectCheckByCondition(map);
+            rs = new Result("200",null,checks);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rs;
+    }
+
+
+
+    //项目成绩
+    public int projectGrade(int id){
+        int grade = 0;
+        List<Project> projects = projectMapper.findProjectByLeaderId(id);
+        for (Project project : projects) {
+            Integer res = levelMapper.selectLevelScoreById(project.getLevel_id());
+            if(res == null) res = 0;
+            grade += res;
+        }
+        return grade;
+    }
+    //项目经费
+    public int projectOutlay(int id){
+        int sumOutlay = 0;
+        List<Project> projects = projectMapper.findProjectByLeaderId(id);
+        for (Project project : projects) {
+            sumOutlay +=project.getOutlay();
+        }
+        return sumOutlay;
+    }
+
+    //项目经费成绩
+    public int projectOutlayScore(int id){
+        int OutlayScore = 0;
+        List<Project> projects = projectMapper.findProjectByLeaderId(id);
+        for (Project project : projects) {
+            Integer res = outlayMapper.selectOutlayScore(project.getOutlay());
+            if(res == null) res = 0;
+            OutlayScore += res;
+        }
+        return OutlayScore;
+    }
+    //获奖成绩
+    public int awardGrade(int id){
+        int grade = 0;
+        List<Award> awards = awardMapper.findAwardByLeaderId(id);
+        System.out.println(awards);
+        System.out.println(id);
+        for (Award award : awards) {
+            System.out.println(award.getAl_id());
+            System.out.println(award.getAr_id());
+            System.out.println(awardLevelMapper.selectAwardLevelScoreById(award.getAl_id()));
+            System.out.println(awardRankMapper.selectAwardRankScoreById(award.getAr_id()));
+            Integer res1 = awardLevelMapper.selectAwardLevelScoreById(award.getAl_id());
+            if(res1 == null) res1 = 0;
+            Integer res2 = awardRankMapper.selectAwardRankScoreById(award.getAr_id());
+            if(res2 == null) res2 = 0;
+            grade += res1 + res2;
+        }
+        return grade;
+    }
+    //著作成绩
+    public int bookGrade(int id){
+        int grade = 0;
+        List<Book> books = bookMapper.findBookByLeaderId(id);
+        for (Book book : books) {
+            Integer res = pressLevelMapper.selectPressLevelScoreById(book.getPl_id());
+            if(res == null) res = 0;
+            grade += res;
+        }
+        return grade;
+    }
+    //论文成绩
+    public int paperGrade(int id){
+        int grade = 0;
+        List<Paper> papers = paperMapper.findPaperByLeaderId(id);
+        for (Paper paper : papers) {
+            Integer res = periodicalMapper.selectPeriodicalScoreById(paper.getPeriodical_id());
+            if(res == null) res = 0;
+            grade += res;
+        }
+        return grade;
+    }
+    //测试split
+    public static void main(String[] args) {
+        String checkTime = "2020年第1学期";
+        String[] str = checkTime.split("年");
+        if (str[1].equals("第1学期")){
+            str[0] = str[0]+"-01-01 00:00:00";
+        }else{
+            str[0] = str[0]+"-07-01 00:00:00";
+        }
+        System.out.println(str[0]);
+    }
+}
