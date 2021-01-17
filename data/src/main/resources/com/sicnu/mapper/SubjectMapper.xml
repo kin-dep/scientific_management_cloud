@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.mapper.SubjectMapper">
+
+    <insert id="addSubject" parameterType="Subject">
+        insert into subject(subject_id,subject_name,sc_id) values(#{subject_id},#{subject_name},#{sc_id})
+    </insert>
+    <delete id="delSubject" parameterType="Subject">
+        delete from subject where subject_id = #{subject_id}
+    </delete>
+    <select id="findAllSubject" resultType="Subject">
+        select * from subject
+    </select>
+    <select id="selectSubjectByName" parameterType="string" resultType="Subject">
+        select * from subject where
+        subject_name = #{subject_name}
+    </select>
+    <update id="updateSubject" parameterType="Subject">
+        update subject
+        set
+        subject_name = #{subject_name}
+        where
+        subject_id = #{subject_id}
+    </update>
+</mapper>

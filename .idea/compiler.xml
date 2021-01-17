@@ -8,16 +8,16 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="check" />
-        <module name="login" />
-        <module name="project" />
+        <module name="achievement" />
         <module name="log" />
         <module name="auth" />
         <module name="system_management" />
         <module name="data" />
-        <module name="achievement" />
         <module name="route" />
-        <module name="examine" />
+        <module name="project" />
         <module name="center" />
+        <module name="examine" />
+        <module name="login" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

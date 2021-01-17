@@ -1,28 +1,28 @@
 package com.sicnu.log.controller;
 
 
-import com.sicnu.log.pojo.LogsListResult;
-import com.sicnu.log.service.impl.OperationLogServiceImpl;
+
+
+import com.sicnu.log.service.OperationLogService;
 import com.sicnu.log.util.Result;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-
 @RestController
-@CrossOrigin
+@RequestMapping("/operationLog")
 public class OperationLogController {
 
 
-    @Resource
-    OperationLogServiceImpl operationLogService;
+    @Autowired
+    OperationLogService operationLogService;
 
     private Result rs = null;
 
-    @PostMapping("/logs/findAllOperationLogs")
-    public Result findAllOperationLogs(Integer pageSize, Integer pageNum) {
-        LogsListResult logsListResult = null;
+    @PostMapping("/findAllOperationLogs")
+    public Result findAllOperationLogs(@RequestParam Integer pageSize,@RequestParam Integer pageNum) {
         try {
             rs = operationLogService.findAllOperationLogs(pageSize, pageNum);
 
@@ -32,7 +32,7 @@ public class OperationLogController {
 
         return rs;
     }
-    @PostMapping("/logs/deleteAllOperationLogs")
+    @PostMapping("/deleteAllOperationLogs")
     public Result deleteAllOperationLogs() {
         try {
             rs=operationLogService.deleteAllOperationLogs();

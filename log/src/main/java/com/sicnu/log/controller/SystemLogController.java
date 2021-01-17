@@ -1,27 +1,27 @@
 package com.sicnu.log.controller;
 
 
-import com.sicnu.log.pojo.LogsListResult;
-import com.sicnu.log.service.impl.SystemLogServiceImpl;
+
+import com.sicnu.log.service.SystemLogService;
 import com.sicnu.log.util.Result;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
 @RestController
-@CrossOrigin
+@RequestMapping("/systemLogs")
 public class SystemLogController {
-    @Resource
-    SystemLogServiceImpl systemLogService;
+    @Autowired
+    SystemLogService systemLogService;
 
     private Result rs = null;
 
-    @PostMapping("/logs/findAllSystemLogs")
-
-    public Result findAllSystemLogs(Integer pageSize, Integer pageNum) {
-        LogsListResult logsListResult = null;
+    @PostMapping("/findAllSystemLogs")
+    public Result findAllSystemLogs(@RequestParam Integer pageSize, @RequestParam Integer pageNum) {
         try {
             rs = systemLogService.findAllSystemLogs(pageSize, pageNum);
         } catch (Exception e) {
@@ -31,8 +31,7 @@ public class SystemLogController {
         return rs ;
     }
 
-    @PostMapping("/logs/deleteAllSystemLogs")
-
+    @PostMapping("/deleteAllSystemLogs")
     public Result deleteAllSystemLogs() {
         try {
             rs = systemLogService.deleteAllSystemLogs();

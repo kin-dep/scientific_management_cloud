@@ -9,11 +9,11 @@
         <option value="$PROJECT_DIR$/login/pom.xml" />
         <option value="$PROJECT_DIR$/project/pom.xml" />
         <option value="$PROJECT_DIR$/route/pom.xml" />
-        <option value="$PROJECT_DIR$/data/pom.xml" />
         <option value="$PROJECT_DIR$/auth/pom.xml" />
         <option value="$PROJECT_DIR$/check/pom.xml" />
-        <option value="$PROJECT_DIR$/log/pom.xml" />
         <option value="$PROJECT_DIR$/system_management/pom.xml" />
+        <option value="$PROJECT_DIR$/data/pom.xml" />
+        <option value="$PROJECT_DIR$/log/pom.xml" />
       </list>
     </option>
   </component>

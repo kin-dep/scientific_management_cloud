@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sicnu.mapper.CheckMapper">
+   <insert id="addCheck" parameterType="Check">
+       insert into `check`
+       (
+            user_id,
+            user_name,
+            department_id,
+            award_count,
+            award_score,
+            book_count,
+            book_score,
+            paper_count,
+            paper_score,
+            patent_count,
+            patent_score,
+            project_count,
+            project_score,
+            outlay_sum,
+            outlay_score,
+            total_score,
+            check_time
+       )
+        values
+        (
+            #{user_id},
+            #{user_name},
+            #{department_id},
+            #{award_count},
+            #{award_score},
+            #{book_count},
+            #{book_score},
+            #{paper_count},
+            #{paper_score},
+            #{patent_count},
+            #{patent_score},
+            #{project_count},
+            #{project_score},
+            #{outlay_sum},
+            #{outlay_score},
+            #{total_score},
+            #{check_time}
+        )
+   </insert>
+    <select id="selectCheckByCondition" resultType="Check" parameterType="java.util.HashMap">
+        select * from `check`
+        <where>
+            <if test="user_id!=null and user_id!=''">
+               and user_id = #{user_id}
+            </if>
+            <if test="user_name!=null and user_name!=''">
+                and user_name = #{user_name}
+            </if>
+            <if test="department_id!=null and department_id!=''">
+               and department_id = #{department_id}
+            </if>
+            <if test="check_time!=null and check_time!=''">
+                and check_time =#{check_time}
+            </if>
+        </where>
+        order by total_score desc
+    </select>
+    <delete id="delCheck">
+        delete from `check`
+    </delete>
+</mapper>

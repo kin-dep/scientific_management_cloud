@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="SubjectCategoryMapper">
+<mapper namespace="com.sicnu.system_management.mapper.SubjectCategoryMapper">
     <resultMap id="subjectMap" type="SubjectCategory">
         <id property="sc_id" column="sc_id"/>
         <result property="sc_name" column="sc_name"/>

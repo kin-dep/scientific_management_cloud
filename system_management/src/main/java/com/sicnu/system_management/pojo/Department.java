@@ -2,6 +2,8 @@ package com.sicnu.system_management.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.io.Serializable;
+
 /**
  * 部门
  */

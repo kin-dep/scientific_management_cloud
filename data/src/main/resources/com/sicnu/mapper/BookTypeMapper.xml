@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.mapper.BookTypeMapper">
+    <insert id="addBookType" parameterType="BookType">
+        insert into book_type(bt_name) values(#{bt_name})
+    </insert>
+    <delete id="delBookType" parameterType="BookType">
+        delete from book_type where bt_id = #{bt_id}
+    </delete>
+    <select id="findAllBookType" resultType="BookType">
+        select * from book_type
+    </select>
+    <select id="selectBookTypeByName" parameterType="string" resultType="BookType">
+        select * from book_type where
+        bt_name = #{bt_name}
+    </select>
+    <update id="updateBookType" parameterType="BookType">
+        update book_type
+        set
+        bt_name = #{bt_name}
+        where
+        bt_id = #{bt_id}
+    </update>
+</mapper>

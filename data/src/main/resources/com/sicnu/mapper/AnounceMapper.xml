@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.mapper.AnounceMapper">
+    <insert id="addAnounce" parameterType="Anounce">
+        insert into anounce(anounce_title, anounce_date, anounce_author, anounce_text)
+        values(#{anounce_title}, #{anounce_date}, #{anounce_author}, #{anounce_text})
+    </insert>
+
+    <delete id="delAnounceById" parameterType="int">
+        delete from anounce where anounce_id = #{anounce_id}
+    </delete>
+
+    <update id="updateAnounce" parameterType="Anounce">
+        update anounce
+        <trim prefix="set" suffixOverrides=",">
+            <if test="anounce_title!=null and anounce_title!=''">
+                anounce_title = #{anounce_title},
+            </if>
+            <if test="anounce_text!=null and anounce_text!=''">
+                anounce_text = #{anounce_text},
+            </if>
+        </trim>
+        where anounce_id = #{anounce_id}
+    </update>
+
+    <select id="selectAllAnounce" parameterType="java.util.HashMap" resultType="Anounce">
+        select * from anounce order by anounce_date desc
+        <if test="pageNum != null and pageSize != null">
+            <bind name="key_offset" value="(pageNum-1)*pageSize"></bind>
+            limit #{key_offset},#{pageSize}
+        </if>
+    </select>
+
+    <select id="selectAnounceById" parameterType="int" resultType="Anounce">
+        select * from anounce where anounce_id = #{anounce_id}
+    </select>
+
+    <select id="countAnounce" resultType="int">
+        select count(*) from anounce
+    </select>
+
+</mapper>
+

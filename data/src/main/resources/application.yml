@@ -8,8 +8,20 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
     type: com.alibaba.druid.pool.DruidDataSource
+  mvc:
+    format:
+      date: yyyy-MM-dd
+    static-path-pattern: /static/**
+  mail:
+    username: 1776557392@qq.com
+    password: cxqofcvolzgabecjy
+    host: smtp.qq.com
+    properties.mail.smtp.ssl.enable: true
+  thymeleaf:
+    cache: false
   application:
     name: data
+
 
 eureka:
   instance:
@@ -19,5 +31,5 @@ eureka:
       defaultZone: http://localhost:10000/eureka/
 
 mybatis:
-  type-aliases-package: com.sicnu.achievement.pojo
-  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sicnu.pojo
+  mapper-locations: classpath:com/sicnu/mapper/*.xml

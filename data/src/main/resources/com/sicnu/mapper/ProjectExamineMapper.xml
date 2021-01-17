@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sicnu.mapper.ProjectExamineMapper">
+
+
+    <insert id="addProjectExamine" parameterType="ProjectExamine">
+        insert into project_examine(
+        project_name,
+        leader_id,
+        department_id,
+        aod_id,
+        sc_id,
+        subject_id,
+        nature_id,
+        level_id,
+        status_id,
+        sd_id,
+        at_id,
+        approval_number,
+        start_time,
+        plan_time,
+        complete_time,
+        outlay,
+        ct_id,
+        examine_status,
+        apply_time,
+        reviewer_id
+        )
+        values(
+        #{project_name},
+        #{leader_id},
+        #{department_id},
+        #{aod_id},
+        #{sc_id},
+        #{subject_id},
+        #{nature_id},
+        #{level_id},
+        #{status_id},
+        #{sd_id},
+        #{at_id},
+        #{approval_number},
+        #{start_time},
+        #{plan_time},
+        #{complete_time},
+        #{outlay},
+        #{ct_id},
+        #{examine_status},
+        #{apply_time},
+        #{reviewer_id}
+        )
+    </insert>
+    <select id="selectProjectExamineByCondition" parameterType="java.util.HashMap" resultType="ProjectExamine">
+        select * from project_examine
+        <where>
+            <if test="project_id!=null and project_id!=''">
+                and project_id = #{project_id}
+            </if>
+            <if test="project_name!=null and project_name!=''">
+                and project_name like '%${project_name}%'
+            </if>
+            <if test="department_id!=null and department_id!=''">
+                and department_id = #{department_id}
+            </if>
+            <if test="leader_id!=null and leader_id!=''">
+                and leader_id = #{leader_id}
+            </if>
+            <if test="sc_id!=null and sc_id!=''">
+                and sc_id = #{sc_id}
+            </if>
+            <if test="subject_id!=null and subject_id!=''">
+                and subject_id = #{subject_id}
+            </if>
+            <if test="nature_id!=null and nature_id!=''">
+                and nature_id =#{nature_id}
+            </if>
+            <if test="level_id!=null and level_id!=''">
+                and level_id =#{level_id}
+            </if>
+            <if test="status_id!=null and status_id!=''">
+                and status_id =#{status_id}
+            </if>
+            <if test="sd_id!=null and sd_id!=''">
+                and sd_id =#{sd_id}
+            </if>
+            <if test="at_id!=null and at_id!=''">
+                and at_id =#{at_id}
+            </if>
+            <if test="approval_number!=null and approval_number!=''">
+                and approval_number like'%${approval_number}%'
+            </if>
+            <if test="start_time_start!=null  and start_time_end!=null ">
+                <![CDATA[
+                and start_time >= #{start_time_start}
+                and start_time <= #{start_time_end}
+                ]]>
+            </if>
+            <if test="plan_time_start!=null  and plan_time_end!=null ">
+                <![CDATA[
+                and plan_time >= #{plan_time_start}
+                and plan_time <= #{plan_time_end}
+                ]]>
+            </if>
+            <if test="complete_time_start!=null  and complete_time_end!=null ">
+                <![CDATA[
+                and complete_time >= #{complete_time_start}
+                and complete_time <= #{complete_time_end}
+                ]]>
+            </if>
+            <if test="outlay!=null and outlay!=''">
+                and outlay =#{outlay}
+            </if>
+            <if test="ct_id!=null and ct_id!=''">
+                and ct_id =#{ct_id}
+            </if>
+            <if test="examine_status!=null and examine_status!=''">
+                and examine_status =#{examine_status}
+            </if>
+            <if test="apply_time_start!=null and apply_time_end!=null">
+                <![CDATA[
+                and apply_time >= #{apply_time_start}
+                and apply_time <= #{apply_time_end}
+                ]]>
+            </if>
+            <if test="reviewer_id!=null and reviewer_id!=''">
+                and reviewer_id =#{reviewer_id}
+            </if>
+        </where>
+        <if test="pageNum != null and pageSize != null">
+            <bind name="key_offset" value="(pageNum-1)*pageSize"></bind>
+            limit #{key_offset},#{pageSize}
+        </if>
+    </select>
+    <delete id="delProjectExamineById" parameterType="ProjectExamine">
+        delete from project_examine
+        where
+        pe_id = #{pe_id}
+    </delete>
+    <delete id="delProjectExamine" parameterType="ProjectExamine">
+        delete from project_examine
+        where
+        leader_id = #{leader_id}
+        and
+        project_name = #{project_name}
+    </delete>
+    <select id="selectProjectExamineId" parameterType="ProjectExamine" resultType="int">
+        select pe_id from project_examine
+        where
+        leader_id = #{leader_id}
+        and
+        project_name = #{project_name}
+    </select>
+
+<!--    <select id="selectTeamByPid" parameterType="int" resultMap="projectTeamMap">-->
+<!--        SELECT-->
+<!--        u.user_name,u.department_id,u.role_id,-->
+<!--        t.user_role-->
+<!--        FROM-->
+<!--        user u,-->
+<!--        project p,-->
+<!--        project_team t-->
+<!--        WHERE-->
+<!--        p.project_id = #{project_id}-->
+<!--        and-->
+<!--        p.project_id = t.project_id-->
+<!--        and-->
+<!--        t.user_id = u.user_id-->
+<!--    </select>-->
+
+    <select id="findProjectExamineById" parameterType="ProjectExamine" resultType="ProjectExamine">
+        select * from project_examine where
+        pe_id = #{pe_id}
+    </select>
+    <select id="selectTotalProjectExamine" parameterType="java.util.HashMap" resultType="int">
+        select count(*) total from project_examine
+        <where>
+            <if test="project_id!=null and project_id!=''">
+                and project_id = #{project_id}
+            </if>
+            <if test="project_name!=null and project_name!=''">
+                and project_name like '%${project_name}%'
+            </if>
+            <if test="department_id!=null and department_id!=''">
+                and department_id = #{department_id}
+            </if>
+            <if test="leader_id!=null and leader_id!=''">
+                and leader_id = #{leader_id}
+            </if>
+            <if test="sc_id!=null and sc_id!=''">
+                and sc_id = #{sc_id}
+            </if>
+            <if test="subject_id!=null and subject_id!=''">
+                and subject_id = #{subject_id}
+            </if>
+            <if test="nature_id!=null and nature_id!=''">
+                and nature_id =#{nature_id}
+            </if>
+            <if test="level_id!=null and level_id!=''">
+                and level_id =#{level_id}
+            </if>
+            <if test="status_id!=null and status_id!=''">
+                and status_id =#{status_id}
+            </if>
+            <if test="sd_id!=null and sd_id!=''">
+                and sd_id =#{sd_id}
+            </if>
+            <if test="at_id!=null and at_id!=''">
+                and at_id =#{at_id}
+            </if>
+            <if test="approval_number!=null and approval_number!=''">
+                and approval_number like'%${approval_number}%'
+            </if>
+            <if test="start_time_start!=null  and start_time_end!=null ">
+                <![CDATA[
+                and start_time >= #{start_time_start}
+                and start_time <= #{start_time_end}
+                ]]>
+            </if>
+            <if test="plan_time_start!=null  and plan_time_end!=null ">
+                <![CDATA[
+                and plan_time >= #{plan_time_start}
+                and plan_time <= #{plan_time_end}
+                ]]>
+            </if>
+            <if test="complete_time_start!=null  and complete_time_end!=null ">
+                <![CDATA[
+                and complete_time >= #{complete_time_start}
+                and complete_time <= #{complete_time_end}
+                ]]>
+            </if>
+            <if test="outlay!=null and outlay!=''">
+                and outlay =#{outlay}
+            </if>
+            <if test="ct_id!=null and ct_id!=''">
+                and ct_id =#{ct_id}
+            </if>
+            <if test="examine_status!=null and examine_status!=''">
+                and examine_status =#{examine_status}
+            </if>
+            <if test="apply_time_start!=null and apply_time_end!=null">
+                <![CDATA[
+                and apply_time >= #{apply_time_start}
+                and apply_time <= #{apply_time_end}
+                ]]>
+            </if>
+            <if test="reviewer_id!=null and reviewer_id!=''">
+                and reviewer_id =#{reviewer_id}
+            </if>
+        </where>
+    </select>
+    <select id="countProjectExamine" resultType="int">
+        select count(*) from project_examine
+    </select>
+</mapper>
