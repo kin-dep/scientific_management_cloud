@@ -1,0 +1,12 @@
+# scientific_management_cloud
+achievement: 科研项目
+auth: 权限管理
+center: 注册中心
+check: 科研审核
+data: 数据中心(未完成)
+examine: 科研考核
+log: 系统日志
+login: 登录模块
+project: 科研项目
+system_management: 共用查询模块
+route; 路由
